@@ -1,13 +1,7 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JButton;
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Main {
-
 	private JFrame frame;
 
 	/**
@@ -38,16 +32,8 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 240, 360);
+		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("test");
-			}
-		});
-		frame.getContentPane().add(btnNewButton, BorderLayout.NORTH);
 	}
 
 }
