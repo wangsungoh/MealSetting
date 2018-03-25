@@ -3,6 +3,8 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 
+import model.Cuisine;
+import model.Member;
 import util.Jdbc;
 
 public class Main {
@@ -29,7 +31,13 @@ public class Main {
 	 */
 	public Main() {
 		Jdbc db = new Jdbc();
+		Member member = new Member();
+		Cuisine cuisine = new Cuisine();
+		
 		db.initializeDb();
+		
+		member.initializeMember();
+		cuisine.initializeMember();
 		
 		initialize();
 	}
