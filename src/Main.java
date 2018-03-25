@@ -1,5 +1,9 @@
 import java.awt.EventQueue;
+import java.sql.SQLException;
+
 import javax.swing.JFrame;
+
+import util.Jdbc;
 
 public class Main {
 	private JFrame frame;
@@ -24,6 +28,9 @@ public class Main {
 	 * Create the application.
 	 */
 	public Main() {
+		Jdbc db = new Jdbc();
+		db.initializeDb();
+		
 		initialize();
 	}
 
