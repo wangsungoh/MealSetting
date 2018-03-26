@@ -4,32 +4,28 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.mysql.jdbc.Connection;
-
 import util.Jdbc;
 
-public class Member {
-	private int memberNo;
-	private String memberName;
-	private String passwd;
-	private String tableNameString = "member";
-	private String memberNoString = "memberNo";
-	private String memberNameString = "memberName";
-	private String passwdString = "passwd";
+public class Cuisine {
+	private int cuisineNo;
+	private String cuisineName;
+	private String tableNameString = "cuisine";
+	private String cuisineNoString = "cuisineNo";
+	private String cuisineNameString = "cuisineName";
 
-	private String pKey = memberNoString;
+	private String pKey = cuisineNoString;
 
-	public Member() {
+	public Cuisine() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public void initializeMember() {
+
+	public void initializeCuisine() {
 		Jdbc db = new Jdbc();
 		db.connectUser();
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/member.txt";
+		String dataFileName = "./DataFiles/cuisine.txt";
 		String line;
 
 		/**
@@ -47,13 +43,12 @@ public class Member {
 				String datavalue[] = line.split("\t");
 				String value1 = datavalue[0];
 				String value2 = datavalue[1];
-				String value3 = datavalue[2];
 
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2 + " " + value3);
-				db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberNo`, `memberName`, `passwd`) VALUES ('" + value1 + "', '" + value2 + "', '" + value3 + "')");
+				System.out.println(value1 + " " + value2);
+				db.queryDb(db.getConnection(), "INSERT INTO `cuisine` (`cuisineNo`, `cuisineName`) VALUES ('" + value1 + "', '" + value2 + "')");
 			}
 			
 			bReader.close();
@@ -64,25 +59,20 @@ public class Member {
 		
 		db.closeConnection();
 	}
-	
+
 	public String getTableNameString() {
 		return tableNameString;
 	}
 
-	public String getMemberNoString() {
-		return memberNoString;
+	public String getCuisineNoString() {
+		return cuisineNoString;
 	}
 
-	public String getMemberNameString() {
-		return memberNameString;
-	}
-
-	public String getPasswdString() {
-		return passwdString;
+	public String getCuisineNameString() {
+		return cuisineNameString;
 	}
 
 	public String getPkeyString() {
 		return pKey;
 	}
 }
-
