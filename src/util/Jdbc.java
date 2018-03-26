@@ -2,7 +2,9 @@ package util;
 import java.sql.*;
 
 import model.Cuisine;
+import model.Meal;
 import model.Member;
+import model.OrderList;
 
 public class Jdbc {
     private String jdbcDriver = "com.mysql.jdbc.Driver";
@@ -71,8 +73,8 @@ public class Jdbc {
 
 		createTableMember(connection);
 		createTableCuisine(connection);
-//		createTableMeal(connection);
-//		createTableOrderList(connection);
+		createTableMeal(connection);
+		createTableOrderList(connection);
 				
 		closeConnection();
 	}
@@ -135,17 +137,20 @@ public class Jdbc {
     }
 
     private void createTableMeal(final Connection connection) {
-    	Member member = new Member();
-    	
-        String myTableName = "CREATE TABLE `" + dbName + "`.`" + member.getTableNameString() + "` ("
-        		  + "`" + member.getMemberNoString() + "` INT NOT NULL AUTO_INCREMENT,"
-        		  + "`" + member.getMemberNameString() + "` VARCHAR(20) NULL,"
-        		  + "`" + member.getPasswdString() + "` VARCHAR(4) NULL,"
-        		  + "PRIMARY KEY (`memberNo`))";
+    	Meal meal = new Meal();
+
+        String queryCreateTable = "CREATE TABLE `" + dbName + "`.`" + meal.getTableNameString() + "` ("
+        		  + "`" + meal.getMealNoString() + "` INT NOT NULL AUTO_INCREMENT,"
+        		  + "`" + meal.getCuisineNoString() + "` INT NULL,"
+        		  + "`" + meal.getMealNameString() + "` VARCHAR(20) NULL,"
+           		  + "`" + meal.getPriceString() + "` INT NULL,"
+           		  + "`" + meal.getMaxCountString() + "` INT NULL,"
+           		  + "`" + meal.getTodayMealString() + "` TINYINT(1) NULL,"
+        		  + "PRIMARY KEY (`" + meal.getPkeyString() + "`))";
         try {
             statement = connection.createStatement();
             //The next line has the issue
-            statement.executeUpdate(myTableName);
+            statement.executeUpdate(queryCreateTable);
         }
         catch (SQLException e ) {
             System.out.println("An error has occurred on Table Creation");
@@ -153,17 +158,22 @@ public class Jdbc {
     }
 
     private void createTableOrderList(final Connection connection) {
-    	Member member = new Member();
-    	
-        String myTableName = "CREATE TABLE `" + dbName + "`.`" + member.getTableNameString() + "` ("
-        		  + "`" + member.getMemberNoString() + "` INT NOT NULL AUTO_INCREMENT,"
-        		  + "`" + member.getMemberNameString() + "` VARCHAR(20) NULL,"
-        		  + "`" + member.getPasswdString() + "` VARCHAR(4) NULL,"
-        		  + "PRIMARY KEY (`memberNo`))";
-        try {
+    	OrderList orderlist = new OrderList();
+
+    	String queryCreateTable = "CREATE TABLE `" + dbName + "`.`" + orderlist.getTableNameString() + "` ("
+        		  + "`" + orderlist.getOrderNoString() + "` INT NOT NULL AUTO_INCREMENT,"
+        		  + "`" + orderlist.getCuisineNoString() + "` INT NULL,"
+        		  + "`" + orderlist.getMealNoString() + "` INT NULL,"
+        		  + "`" + orderlist.getMemberNoString() + "` INT NULL,"
+                  + "`" + orderlist.getOrderCountString() + "` INT NULL,"
+                  + "`" + orderlist.getAmountString() + "` INT NULL,"
+                  + "`" + orderlist.getOrderDateString() + "` DATETIME NULL,"
+        		  + "PRIMARY KEY (`" + orderlist.getPkeyString() + "`))";
+ 
+    	try {
             statement = connection.createStatement();
             //The next line has the issue
-            statement.executeUpdate(myTableName);
+            statement.executeUpdate(queryCreateTable);
         }
         catch (SQLException e ) {
             System.out.println("An error has occurred on Table Creation");

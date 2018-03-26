@@ -19,7 +19,7 @@ public class Cuisine {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void initializeMember() {
+	public void initializeCuisine() {
 		Jdbc db = new Jdbc();
 		db.connectUser();
 		/**
