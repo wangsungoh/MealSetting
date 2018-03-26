@@ -42,7 +42,6 @@ public class Member {
 			while(rs.next()) {
 				int no = rs.getInt("memberNo");
 				this.theLastMemberNo = no;
-				System.out.println(no);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -56,10 +55,7 @@ public class Member {
 		/**
 		 * Source file to read data from.
 		 */
-        URL url = Member.class.getResource(
-                "/DataFiles/member.txt");
-
-        String dataFileName = url.getFile().toString();
+		String dataFileName = "./DataFiles/member.txt";
 		String line;
 
 		/**

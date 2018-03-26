@@ -25,7 +25,7 @@ public class Cuisine {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "/DataFiles/cuisine.txt";
+		String dataFileName = "./DataFiles/cuisine.txt";
 		String line;
 
 		/**

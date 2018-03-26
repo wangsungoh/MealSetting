@@ -31,7 +31,7 @@ public class Meal {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "/DataFiles/meal.txt";
+		String dataFileName = "./DataFiles/meal.txt";
 		String line;
 
 		/**
