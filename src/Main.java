@@ -60,10 +60,15 @@ public class Main {
 		frame.setBounds(100, 100, 239, 195);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
+		
+		RegUserFrame regUserFrame = new RegUserFrame(frame);
 		
 		JButton btnRegUserButton = new JButton("사원등록");
 		btnRegUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				regUserFrame.setVisible(true);
 			}
 		});
 		btnRegUserButton.setBounds(6, 5, 227, 37);
