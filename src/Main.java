@@ -62,12 +62,12 @@ public class Main {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		
-		RegUserFrame regUserFrame = new RegUserFrame(frame);
 		
 		JButton btnRegUserButton = new JButton("사원등록");
 		btnRegUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
+				RegUserFrame regUserFrame = new RegUserFrame(frame);
 				regUserFrame.setVisible(true);
 			}
 		});

@@ -47,6 +47,17 @@ public class Member {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		db.closeConnection();
+	}
+	
+	public void insertNewMember(final String memberName, final String passwd) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
+		
+		db.closeConnection();
 	}
 	
 	public void initializeMember() {

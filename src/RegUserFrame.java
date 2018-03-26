@@ -25,12 +25,24 @@ public class RegUserFrame extends JFrame {
 	private JTextField textFieldMemberName;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
-
+	private int newMemberNo;
+	private Member member = null;
+	
+	private void RegUserRefresh() {
+		this.newMemberNo = member.gettheLastMemberNo();
+		this.newMemberNo++;
+		System.out.println(String.valueOf(newMemberNo));
+	}
+	
 	/**
 	 * Create the frame.
 	 * @param frame 
 	 */
 	public RegUserFrame(JFrame main_frame) {
+		member = new Member();
+		
+		this.RegUserRefresh();
+		
 		setResizable(false);
 		setTitle("사원등록");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,10 +51,6 @@ public class RegUserFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		Member member = new Member();
-		int newMemberNo = member.gettheLastMemberNo();
-		System.out.println(String.valueOf(newMemberNo));
 		
 		JLabel memberNoLabel = new JLabel("사원번호:");
 		memberNoLabel.setBounds(19, 20, 118, 16);
@@ -66,11 +74,19 @@ public class RegUserFrame extends JFrame {
 				if (textFieldMemberName.getText().length() > 0 && passwordField.getPassword().length > 0 && passwordField_1.getPassword().length > 0) {
 					if (Arrays.equals(passwordField.getPassword(), passwordField_1.getPassword())) {
 						System.out.println("registration");
+						member.insertNewMember(textFieldMemberName.getText(), String.valueOf(passwordField.getPassword()));
 						JOptionPane.showMessageDialog(main_frame,
 							    "사원이 등록되었습니다.",
 								"Message", 
 								JOptionPane.INFORMATION_MESSAGE);
-
+						
+						textFieldMemberName.setText("");
+						passwordField.setText("");
+						passwordField_1.setText("");
+						
+						dispose();
+						
+						main_frame.setVisible(true);
 					} else {
 						System.out.println("alert invalid password");						
 
@@ -111,7 +127,9 @@ public class RegUserFrame extends JFrame {
 		textFieldMemberNo.setEditable(false);
 		textFieldMemberNo.setBounds(169, 15, 130, 26);
 		contentPane.add(textFieldMemberNo);
-		textFieldMemberNo.setText(String.valueOf(++newMemberNo));
+		
+		textFieldMemberNo.setText(String.valueOf(this.newMemberNo));
+		
 		textFieldMemberNo.setColumns(10);
 		
 		textFieldMemberName = new JTextField();
