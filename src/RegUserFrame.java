@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.Member;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -36,6 +39,10 @@ public class RegUserFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		Member member = new Member();
+		int newMemberNo = member.gettheLastMemberNo();
+		System.out.println(String.valueOf(newMemberNo));
 		
 		JLabel memberNoLabel = new JLabel("사원번호:");
 		memberNoLabel.setBounds(19, 20, 118, 16);
@@ -104,6 +111,7 @@ public class RegUserFrame extends JFrame {
 		textFieldMemberNo.setEditable(false);
 		textFieldMemberNo.setBounds(169, 15, 130, 26);
 		contentPane.add(textFieldMemberNo);
+		textFieldMemberNo.setText(String.valueOf(++newMemberNo));
 		textFieldMemberNo.setColumns(10);
 		
 		textFieldMemberName = new JTextField();

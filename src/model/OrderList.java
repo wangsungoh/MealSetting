@@ -33,7 +33,7 @@ public class OrderList {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/orderlist.txt";
+		String dataFileName = "/DataFiles/orderlist.txt";
 		String line;
 
 		/**

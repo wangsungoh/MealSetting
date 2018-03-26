@@ -192,7 +192,22 @@ public class Jdbc {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+        
     	return result;
+    }
+    
+    public ResultSet selectDb(final Connection connection, final String query) {
+    	ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        
+        try {
+			pstmt = connection.prepareStatement(query);
+	        rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return rs;
     }
 }//end Jdbc

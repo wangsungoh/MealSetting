@@ -3,6 +3,9 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
 
@@ -19,8 +22,32 @@ public class Member {
 
 	private String pKey = memberNoString;
 
+	private int theLastMemberNo;
+	
 	public Member() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public int gettheLastMemberNo() {
+		getLastMemberNoOfTable();
+		return this.theLastMemberNo;
+	}
+	
+	private void getLastMemberNoOfTable() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "select memberNo from member order by memberNo desc limit 1");
+		
+		try {
+			while(rs.next()) {
+				int no = rs.getInt("memberNo");
+				this.theLastMemberNo = no;
+				System.out.println(no);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void initializeMember() {
@@ -29,7 +56,10 @@ public class Member {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/member.txt";
+        URL url = Member.class.getResource(
+                "/DataFiles/member.txt");
+
+        String dataFileName = url.getFile().toString();
 		String line;
 
 		/**
