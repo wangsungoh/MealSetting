@@ -77,6 +77,9 @@ public class Main {
 		JButton btnUserButton = new JButton("사용자");
 		btnUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				TicketFrame ticketFrame = new TicketFrame(frame);
+				ticketFrame.setVisible(true);
 			}
 		});
 		btnUserButton.setBounds(6, 47, 227, 37);
