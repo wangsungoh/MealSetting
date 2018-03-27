@@ -42,7 +42,7 @@ public class Jdbc {
 	public void connectUser() {
         try {
 			Class.forName(jdbcDriver);
-	        con = DriverManager.getConnection(dbAddress + "?autoReconnect=true&useSSL=false", newUser, newUserPasswd);
+	        con = DriverManager.getConnection(dbAddress + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false", newUser, newUserPasswd);
 			Statement s = con.createStatement();
             s.executeUpdate("USE " + dbName);
 		} catch (ClassNotFoundException e) {
@@ -55,9 +55,12 @@ public class Jdbc {
 	}
 	
 	public void initializeDb() {
+		/*
+		 * con = DriverManager.getConnection("jdbc:mysql:///dbname?useUnicode=true&characterEncoding=utf-8", "user", "pass");
+		 */
         try {
 			Class.forName(jdbcDriver);
-	        con = DriverManager.getConnection(dbAddress + "?autoReconnect=true&useSSL=false", userName, password);
+	        con = DriverManager.getConnection(dbAddress + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false", userName, password);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
