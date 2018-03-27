@@ -67,6 +67,29 @@ public class Member {
 		db.closeConnection();
 	}
 	
+	public void getAllMember() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		ResultSet rs = db.selectDb(db.getConnection(), "select * from member");
+		try {
+			while(rs.next()) {
+				int memberNo = rs.getInt("memberNo");
+				String memberName = rs.getString("memberName");
+				String memberPasswd = rs.getString("passwd");
+
+				Member member = new Member(memberNo, memberName, memberPasswd);
+				
+				this.memberData.add(member);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
+	}
+	
 	public void insertNewMember(final String memberName, final String passwd) {
 		Jdbc db = new Jdbc();
 		db.connectUser();
@@ -74,11 +97,15 @@ public class Member {
 		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
 		
 		db.closeConnection();
+		
+		getAllMember();
 	}
 	
 	public void initializeMember() {
 		Jdbc db = new Jdbc();
 		db.connectUser();
+		
+		memberData.clear();
 		/**
 		 * Source file to read data from.
 		 */

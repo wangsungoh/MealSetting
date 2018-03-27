@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,18 +25,21 @@ import java.awt.Point;
 
 import javax.swing.table.DefaultTableModel;
 
+import component.Ticket;
 import model.Meal;
 import model.Member;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 
 import javax.swing.ListSelectionModel;
 
@@ -239,8 +243,10 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 						sum += (int)model.getValueAt(i, 3);
 					}
 
+					DecimalFormat db = new DecimalFormat("###,###,###,###");
+					
 					System.out.println(String.valueOf(sum));
-					label.setText(String.valueOf(sum)+" 원");
+					label.setText(db.format(sum)+" 원");
 
 					label_2.setText("음식이름");
 					textField.setText("0");
@@ -255,8 +261,18 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		JButton button = new JButton("결제");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<String> memberNameList = new ArrayList<String>();
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
 
+				if (model.getRowCount() == 0 || currentMeal == null && label_2.getText().equals("음식이름")) {
+					JOptionPane.showMessageDialog(main_frame,
+							"매뉴를 선택해 주세요.",
+							"Message",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				List<String> memberNameList = new ArrayList<String>();
+				member.getAllMember();
 				member.getMemberData().forEach((item)-> {
 					System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
 					memberNameList.add(String.valueOf(item.getMemberNo()));
@@ -280,21 +296,75 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 				case JOptionPane.OK_OPTION:
 
 					String cMemberPasswd = "";
-					
-					String sMemberNo = (String) comboBox.getSelectedItem();
-					
+
+					int sMemberNo = Integer.valueOf((String) comboBox.getSelectedItem());
+
 					for(int i = 0; i < member.getMemberData().size(); i++) {
+						if (member.getMemberData().get(i).getMemberNo() == sMemberNo) {
 							System.out.println("sMemberNo : " + sMemberNo +" , " + member.getMemberData().get(i).getMemberNo() + ", " + member.getMemberData().get(i).getPasswd());
-						
-						//						if (String.valueOf(member.getMemberData().get(i).getMemberNo()).equals(comboBox.getSelectedIndex())) {
-//							cMemberPasswd = member.getMemberData().get(i).getPasswd();
-//							break;
-//						}
+							cMemberPasswd = member.getMemberData().get(i).getPasswd();
+						}
 					}
 
-					System.out.println(String.valueOf(passwordField.getPassword()) + ", db passwd : " + cMemberPasswd + ", " + comboBox.getSelectedItem());
+					if (!cMemberPasswd.equals(String.valueOf(passwordField.getPassword()))){
+						JOptionPane.showMessageDialog(main_frame,
+								"패스워드가 일치하지 않습니다.",
+								"Message",
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(main_frame,
+								"결제가 완료되었습니다.\r\n식권을 출력합니다.",
+								"Message",
+								JOptionPane.INFORMATION_MESSAGE);
+
+						List<Object> tableData = new ArrayList<Object>();
+						
+						Calendar calendar1 = Calendar.getInstance(); 
+
+						int year = calendar1.get(Calendar.YEAR);
+						int month = calendar1.get(Calendar.MONTH)+1;
+						int day = calendar1.get(Calendar.DAY_OF_MONTH);
+						int hour = calendar1.get(Calendar.HOUR_OF_DAY); 
+						int min = calendar1.get(Calendar.MINUTE); 
+						int sec = calendar1.get(Calendar.SECOND);
+						String ticketSerial = String.format("%d%d%d%d%d%d-%d", year, month, day, hour, min, sec, sMemberNo );
+						for(int i = 0 ; i < model.getRowCount(); i++) {
+							int mealCount = (int) model.getValueAt(i, 2);
+							Color ticketColor;
+							if (i%2 == 0) {
+								ticketColor = Color.PINK;
+							} else {
+								ticketColor = Color.BLUE;
+							}
+							
+							for(int cnt = 1; cnt <= mealCount; cnt++ ){
+								List<Object> colData = new ArrayList<Object>();
+
+								colData.add(ticketSerial);
+								colData.add(model.getValueAt(i, 0));
+								colData.add(model.getValueAt(i, 1));
+								String menuString = String.format("메뉴 : %s", model.getValueAt(i, 2));
+								colData.add(menuString);
+								
+								int mealPrice = (int)model.getValueAt(i, 3)/mealCount;
+								DecimalFormat db = new DecimalFormat("###,###,###,###");
+								
+								colData.add(db.format(mealPrice)+"원");
+								
+								String mealCntPer = String.format("%d/%d", cnt, mealCount);
+								colData.add(mealCntPer);
+								colData.add(ticketColor);
+								
+								tableData.add(colData);
+							}
+						}
+						
+						Ticket ticket = new Ticket(main_frame, tableData);
+						ticket.setVisible(true);
+					}
+
 					break;
-				}	
+				}
 			}
 		});
 		button.setBounds(147, 0, 97, 23);
