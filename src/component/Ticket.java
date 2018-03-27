@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -42,8 +43,14 @@ public class Ticket extends JFrame {
 			JPanel newpanel = new JPanel(new BorderLayout());
 			newpanel.add(new JLabel((String) obj.get(0)), BorderLayout.NORTH);
 			
-			newpanel.add(new JLabel("식권\r\n"+String.valueOf(obj.get(4))), BorderLayout.CENTER);
-			
+			JPanel centerPanel = new JPanel(new BorderLayout());
+
+			centerPanel.add(new JLabel("식권"), BorderLayout.NORTH);
+			centerPanel.add(new JLabel(String.valueOf(obj.get(4))), BorderLayout.CENTER);
+			centerPanel.setBackground((Color) obj.get(6));
+
+			newpanel.add(centerPanel, BorderLayout.CENTER);
+
 			JPanel bottomPanel = new JPanel(new BorderLayout());
 			bottomPanel.add(new JLabel((String) obj.get(2)), BorderLayout.WEST);
 			bottomPanel.add(new JLabel((String) obj.get(5)), BorderLayout.EAST);
