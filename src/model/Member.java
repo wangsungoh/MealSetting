@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.Connection;
 
@@ -25,7 +27,19 @@ public class Member {
 	private String pKey = memberNoString;
 
 	private int theLastMemberNo;
+
+	List<Member> memberData = new ArrayList<Member>();
+
+	public Member(int memberNo, String memberName, String passwd) {
+		this.memberNo = memberNo;
+		this.memberName = memberName;
+		this.passwd = passwd;
+	}
 	
+	public List<Member> getMemberData() {
+		return this.memberData;
+	}
+
 	public Member() {
 		// TODO Auto-generated constructor stub
 	}
@@ -88,6 +102,10 @@ public class Member {
 				String value2 = datavalue[1];
 				String value3 = datavalue[2];
 
+				Member member = new Member(Integer.valueOf(value1), value2, value3);
+				
+				memberData.add(member);
+
 				/**
 				 * Printing the value read from file to the console
 				 */
@@ -122,6 +140,18 @@ public class Member {
 
 	public String getPkeyString() {
 		return pKey;
+	}
+	
+	public int getMemberNo() {
+		return this.memberNo;
+	}
+	
+	public String getMemberName() {
+		return this.memberName;
+	}
+	
+	public String getPasswd() {
+		return this.passwd;
 	}
 }
 

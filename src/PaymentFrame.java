@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,12 +16,16 @@ import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+
 import java.awt.GridLayout;
 import java.awt.Point;
 
 import javax.swing.table.DefaultTableModel;
 
 import model.Meal;
+import model.Member;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -42,7 +47,8 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	List<Object> tableData = new ArrayList<Object>();
 	Object[][] data = {};
 	private int currentMealCount = 0;
-	
+	Member member;
+
 	static <T> T[] append(T[] arr, T element) {
 	    final int N = arr.length;
 	    arr = Arrays.copyOf(arr, N + 1);
@@ -61,6 +67,9 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		member = new Member();
+		member.initializeMember();
 
 		JLabel lblNewLabel = new JLabel(title);
 		lblNewLabel.setBounds(412, 10, 130, 35);
@@ -210,6 +219,11 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 						    "수량을입력해주세요.",
 						    "Message",
 						    JOptionPane.ERROR_MESSAGE);
+				} else if (currentMeal.getMaxCount() < countOfMeal) {
+					JOptionPane.showMessageDialog(main_frame,
+						    "조리가능수량이 부족합니다.",
+						    "Message",
+						    JOptionPane.ERROR_MESSAGE);
 				} else {
 					System.out.println(currentMeal.getMealName() + ", " + countOfMeal);
 					
@@ -241,6 +255,41 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		JButton button = new JButton("결제");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				List<String> memberNameList = new ArrayList<String>();
+
+				member.getMemberData().forEach((item)-> {
+					System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
+					memberNameList.add(String.valueOf(item.getMemberNo()));
+				});
+
+				String[] appArray = new String[memberNameList.size()];
+				appArray = memberNameList.toArray(appArray);
+				
+				JPanel fields = new JPanel(new GridLayout(2, 1));
+				JTextField field = new JTextField(10);
+				JPasswordField passwordField = new JPasswordField();
+				JComboBox<String> comboBox = new JComboBox<>(appArray);
+
+				fields.add(new JLabel("사원번호"));
+				fields.add(comboBox);
+				fields.add(new JLabel("패스워드"));
+				fields.add(passwordField);
+
+				int result = JOptionPane.showConfirmDialog(null, fields, "Breakfast", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				switch (result) {
+				    case JOptionPane.OK_OPTION:
+				    	String memberPasswd = "";
+						member.getMemberData().forEach((item)-> {
+							if (comboBox.getSelectedItem().equals(String.valueOf(item.getMemberNo()))) {
+								System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
+								memberPasswd = item.getPasswd();
+								return;
+							}
+						});
+				    	
+				        System.out.println(String.valueOf(passwordField.getPassword()) + ", " + comboBox.getSelectedItem());
+				        break;
+				}	
 			}
 		});
 		button.setBounds(147, 0, 97, 23);

@@ -36,14 +36,13 @@ public class Main {
 	 */
 	public Main() {
 		Jdbc db = new Jdbc();
-		Member member = new Member();
+//		Member member = new Member();
 		Cuisine cuisine = new Cuisine();
 		Meal meal = new Meal();
 		OrderList orderlist = new OrderList();
 		
 		db.initializeDb();
 		
-		member.initializeMember();
 		cuisine.initializeCuisine();
 		meal.initializeMeal();
 		orderlist.initializeOrderList();
@@ -57,7 +56,7 @@ public class Main {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("메인");
-		frame.setBounds(100, 100, 239, 195);
+		frame.setBounds(400, 400, 240, 200);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
