@@ -90,7 +90,8 @@ public class Member {
 		 */
 		try {
 			BufferedReader bReader;
-			bReader = new BufferedReader(new InputStreamReader(inputStream));
+			
+			bReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			bReader.readLine(); // this will read the first line
 
 			while ((line = bReader.readLine()) != null) {
