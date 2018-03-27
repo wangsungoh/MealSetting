@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+
 import util.Jdbc;
 
 public class Meal {
@@ -19,7 +21,7 @@ public class Meal {
 	private int price;
 	private int maxCount;
 	private int todayMeal;
-	
+	private JButton jbtn = null;
 	private String tableNameString = "meal";
 	
  	private String mealNoString = "mealNo";
@@ -39,6 +41,14 @@ public class Meal {
 		this.price = price;
 		this.maxCount = maxCount;
 		this.todayMeal = todayMeal;
+	}
+	
+	public void setBtn(JButton jbtn) {
+		this.jbtn = jbtn;
+	}
+	
+	public JButton getBtn() {
+		return this.jbtn;
 	}
 	
 	public Meal() {

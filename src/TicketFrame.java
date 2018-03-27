@@ -97,7 +97,7 @@ public class TicketFrame extends JFrame implements ActionListener{
 							);
 				});
 
-				PaymentFrame paymentFrame = new PaymentFrame(mealData, "한식");
+				PaymentFrame paymentFrame = new PaymentFrame(mealData, "한식", main_frame);
 				paymentFrame.setVisible(true);
 			}
 		});
@@ -121,7 +121,7 @@ public class TicketFrame extends JFrame implements ActionListener{
 							);
 				});
 
-				PaymentFrame paymentFrame = new PaymentFrame(mealData, "중식");
+				PaymentFrame paymentFrame = new PaymentFrame(mealData, "중식", main_frame);
 				paymentFrame.setVisible(true);
 			}
 		});
@@ -144,7 +144,7 @@ public class TicketFrame extends JFrame implements ActionListener{
 							);
 				});
 
-				PaymentFrame paymentFrame = new PaymentFrame(mealData, "일식");
+				PaymentFrame paymentFrame = new PaymentFrame(mealData, "일식", main_frame);
 				paymentFrame.setVisible(true);
 			}
 		});
@@ -167,7 +167,7 @@ public class TicketFrame extends JFrame implements ActionListener{
 							);
 				});
 
-				PaymentFrame paymentFrame = new PaymentFrame(mealData, "양식");
+				PaymentFrame paymentFrame = new PaymentFrame(mealData, "양식", main_frame);
 				paymentFrame.setVisible(true);
 			}
 		});

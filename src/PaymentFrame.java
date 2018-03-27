@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -14,6 +16,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import java.awt.Point;
+
 import javax.swing.table.DefaultTableModel;
 
 import model.Meal;
@@ -25,6 +29,10 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.ListSelectionModel;
 
 public class PaymentFrame extends JFrame implements DocumentListener {
 	private JPanel contentPane;
@@ -45,7 +53,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	/**
 	 * Create the frame.
 	 */
-	public PaymentFrame(List<Meal> mealData, String title) {
+	public PaymentFrame(List<Meal> mealData, String title, JFrame main_frame) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1071, 536);
@@ -115,6 +123,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 					public void actionPerformed(ActionEvent e) {
 						label_2.setText(item.getMealName());
 						currentMeal = item;
+						currentMeal.setBtn(jbtn);
 					}
 				});
 				
@@ -135,7 +144,36 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		DefaultTableModel model = new DefaultTableModel(); 
 
 		JPanel tablePanel = new JPanel(new BorderLayout());
-		table = new JTable(model);
+		table = new JTable(model) {
+			   public boolean isCellEditable(int row, int column){
+			        return false;
+			   }	
+		};
+
+		table.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent mouseEvent) {
+		        JTable table =(JTable) mouseEvent.getSource();
+		        Point point = mouseEvent.getPoint();
+		        
+		        if (mouseEvent.getClickCount() == 2) {
+		            int row = table.rowAtPoint(point);
+
+		            if (row >= 0) {
+			            int selectMealNo = (int)model.getValueAt(row, 0);
+			            mealData.forEach((item) -> {
+			    			if (item.getMealNo() == selectMealNo) {
+					            System.out.println("test " + row + ", selectMealNo : " + selectMealNo);
+
+								model.removeRow(row);
+								item.getBtn().setEnabled(true);
+								
+								return;
+			    			}
+			    		});	
+		            }
+		        }
+		    }
+		});
 		
 		model.addColumn("상품번호");
 		model.addColumn("품명");
@@ -154,23 +192,49 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ttt = textField.getText();
-				System.out.println(currentMeal.getMealName() + ", " + ttt);
-				Object[] obj = {currentMeal.getMealNo(), currentMeal.getMealName(), ttt, Integer.parseInt(ttt)*currentMeal.getPrice()};
-				tableData.add(obj);
-				tableData.toArray( data );
+				int countOfMeal = 0;
 				
-				data = append(data, obj);
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				model.addRow(obj);
-				int sum = 0;
-				for (int i = 0; i < model.getRowCount(); i++) {
-					sum += (int)model.getValueAt(i, 3);
+				if (ttt.length() > 0) {
+					countOfMeal = Integer.parseInt(ttt);
+				} else {
+					countOfMeal = 0;
 				}
-				
-				System.out.println(String.valueOf(sum));
-				label.setText(String.valueOf(sum)+" 원");
+								
+				if (currentMeal == null && label_2.getText().equals("음식이름")) {
+					JOptionPane.showMessageDialog(main_frame,
+						    "메뉴를 선택해 주세요..",
+						    "Message",
+						    JOptionPane.ERROR_MESSAGE);
+				} else if (countOfMeal == 0) {
+					JOptionPane.showMessageDialog(main_frame,
+						    "수량을입력해주세요.",
+						    "Message",
+						    JOptionPane.ERROR_MESSAGE);
+				} else {
+					System.out.println(currentMeal.getMealName() + ", " + countOfMeal);
+					
+					Object[] obj = {currentMeal.getMealNo(), currentMeal.getMealName(), countOfMeal, countOfMeal*currentMeal.getPrice()};
+					tableData.add(obj);
+					tableData.toArray( data );
+					
+					data = append(data, obj);
+					DefaultTableModel model = (DefaultTableModel) table.getModel();
+					model.addRow(obj);
+					int sum = 0;
+					for (int i = 0; i < model.getRowCount(); i++) {
+						sum += (int)model.getValueAt(i, 3);
+					}
+					
+					System.out.println(String.valueOf(sum));
+					label.setText(String.valueOf(sum)+" 원");
+					
+					label_2.setText("음식이름");
+					textField.setText("0");
+					currentMeal.getBtn().setEnabled(false);
+				}
 			}
 		});
+		
 		btnNewButton.setBounds(25, 0, 97, 23);
 		panel_3.add(btnNewButton);
 
