@@ -36,13 +36,14 @@ public class Main {
 	 */
 	public Main() {
 		Jdbc db = new Jdbc();
-//		Member member = new Member();
+		Member member = new Member();
 		Cuisine cuisine = new Cuisine();
 		Meal meal = new Meal();
 		OrderList orderlist = new OrderList();
 		
 		db.initializeDb();
-		
+
+		member.initializeMember();
 		cuisine.initializeCuisine();
 		meal.initializeMeal();
 		orderlist.initializeOrderList();
