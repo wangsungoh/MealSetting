@@ -50,12 +50,12 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	Member member;
 
 	static <T> T[] append(T[] arr, T element) {
-	    final int N = arr.length;
-	    arr = Arrays.copyOf(arr, N + 1);
-	    arr[N] = element;
-	    return arr;
+		final int N = arr.length;
+		arr = Arrays.copyOf(arr, N + 1);
+		arr[N] = element;
+		return arr;
 	}
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -67,7 +67,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		member = new Member();
 		member.initializeMember();
 
@@ -98,11 +98,11 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 		textField = new JTextField();
 		textField.getDocument().addDocumentListener(this);
-		
+
 		textField.setBounds(294, 5, 91, 21);
 		panel_2.add(textField);
 		textField.setColumns(10);
-//		textField.setText(String.valueOf(currentMealCount));
+		//		textField.setText(String.valueOf(currentMealCount));
 
 		JLabel label_3 = new JLabel("수량:");
 		label_3.setBounds(239, 8, 43, 15);
@@ -125,7 +125,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 					+ item.getMaxCount() + ", "
 					+ item.getTodayMeal() + ", "
 					);
-			
+
 			if (item.getMaxCount() > 1 && item.getTodayMeal() == 1) {
 				JButton jbtn = new JButton(item.getMealName()+"("+item.getPrice()+")");
 				jbtn.addActionListener(new ActionListener() {
@@ -135,7 +135,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 						currentMeal.setBtn(jbtn);
 					}
 				});
-				
+
 				panel.add(jbtn);
 			}
 		});
@@ -148,42 +148,42 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		String[] columnNames = {"상품번호",
 				"품명",
 				"수량",
-				"금액"};
-		
+		"금액"};
+
 		DefaultTableModel model = new DefaultTableModel(); 
 
 		JPanel tablePanel = new JPanel(new BorderLayout());
 		table = new JTable(model) {
-			   public boolean isCellEditable(int row, int column){
-			        return false;
-			   }	
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}	
 		};
 
 		table.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent mouseEvent) {
-		        JTable table =(JTable) mouseEvent.getSource();
-		        Point point = mouseEvent.getPoint();
-		        
-		        if (mouseEvent.getClickCount() == 2) {
-		            int row = table.rowAtPoint(point);
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable table =(JTable) mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
 
-		            if (row >= 0) {
-			            int selectMealNo = (int)model.getValueAt(row, 0);
-			            mealData.forEach((item) -> {
-			    			if (item.getMealNo() == selectMealNo) {
-					            System.out.println("test " + row + ", selectMealNo : " + selectMealNo);
+				if (mouseEvent.getClickCount() == 2) {
+					int row = table.rowAtPoint(point);
+
+					if (row >= 0) {
+						int selectMealNo = (int)model.getValueAt(row, 0);
+						mealData.forEach((item) -> {
+							if (item.getMealNo() == selectMealNo) {
+								System.out.println("test " + row + ", selectMealNo : " + selectMealNo);
 
 								model.removeRow(row);
 								item.getBtn().setEnabled(true);
-								
+
 								return;
-			    			}
-			    		});	
-		            }
-		        }
-		    }
+							}
+						});	
+					}
+				}
+			}
 		});
-		
+
 		model.addColumn("상품번호");
 		model.addColumn("품명");
 		model.addColumn("수량");
@@ -202,35 +202,35 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 			public void actionPerformed(ActionEvent e) {
 				String ttt = textField.getText();
 				int countOfMeal = 0;
-				
+
 				if (ttt.length() > 0) {
 					countOfMeal = Integer.parseInt(ttt);
 				} else {
 					countOfMeal = 0;
 				}
-								
+
 				if (currentMeal == null && label_2.getText().equals("음식이름")) {
 					JOptionPane.showMessageDialog(main_frame,
-						    "메뉴를 선택해 주세요..",
-						    "Message",
-						    JOptionPane.ERROR_MESSAGE);
+							"메뉴를 선택해 주세요..",
+							"Message",
+							JOptionPane.ERROR_MESSAGE);
 				} else if (countOfMeal == 0) {
 					JOptionPane.showMessageDialog(main_frame,
-						    "수량을입력해주세요.",
-						    "Message",
-						    JOptionPane.ERROR_MESSAGE);
+							"수량을입력해주세요.",
+							"Message",
+							JOptionPane.ERROR_MESSAGE);
 				} else if (currentMeal.getMaxCount() < countOfMeal) {
 					JOptionPane.showMessageDialog(main_frame,
-						    "조리가능수량이 부족합니다.",
-						    "Message",
-						    JOptionPane.ERROR_MESSAGE);
+							"조리가능수량이 부족합니다.",
+							"Message",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
 					System.out.println(currentMeal.getMealName() + ", " + countOfMeal);
-					
+
 					Object[] obj = {currentMeal.getMealNo(), currentMeal.getMealName(), countOfMeal, countOfMeal*currentMeal.getPrice()};
 					tableData.add(obj);
 					tableData.toArray( data );
-					
+
 					data = append(data, obj);
 					DefaultTableModel model = (DefaultTableModel) table.getModel();
 					model.addRow(obj);
@@ -238,17 +238,17 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 					for (int i = 0; i < model.getRowCount(); i++) {
 						sum += (int)model.getValueAt(i, 3);
 					}
-					
+
 					System.out.println(String.valueOf(sum));
 					label.setText(String.valueOf(sum)+" 원");
-					
+
 					label_2.setText("음식이름");
 					textField.setText("0");
 					currentMeal.getBtn().setEnabled(false);
 				}
 			}
 		});
-		
+
 		btnNewButton.setBounds(25, 0, 97, 23);
 		panel_3.add(btnNewButton);
 
@@ -264,7 +264,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 				String[] appArray = new String[memberNameList.size()];
 				appArray = memberNameList.toArray(appArray);
-				
+
 				JPanel fields = new JPanel(new GridLayout(2, 1));
 				JTextField field = new JTextField(10);
 				JPasswordField passwordField = new JPasswordField();
@@ -277,18 +277,23 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 				int result = JOptionPane.showConfirmDialog(null, fields, "Breakfast", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				switch (result) {
-				    case JOptionPane.OK_OPTION:
-				    	String memberPasswd = "";
-						member.getMemberData().forEach((item)-> {
-							if (comboBox.getSelectedItem().equals(String.valueOf(item.getMemberNo()))) {
-								System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
-								memberPasswd = item.getPasswd();
-								return;
-							}
-						});
-				    	
-				        System.out.println(String.valueOf(passwordField.getPassword()) + ", " + comboBox.getSelectedItem());
-				        break;
+				case JOptionPane.OK_OPTION:
+
+					String cMemberPasswd = "";
+					
+					String sMemberNo = (String) comboBox.getSelectedItem();
+					
+					for(int i = 0; i < member.getMemberData().size(); i++) {
+							System.out.println("sMemberNo : " + sMemberNo +" , " + member.getMemberData().get(i).getMemberNo() + ", " + member.getMemberData().get(i).getPasswd());
+						
+						//						if (String.valueOf(member.getMemberData().get(i).getMemberNo()).equals(comboBox.getSelectedIndex())) {
+//							cMemberPasswd = member.getMemberData().get(i).getPasswd();
+//							break;
+//						}
+					}
+
+					System.out.println(String.valueOf(passwordField.getPassword()) + ", db passwd : " + cMemberPasswd + ", " + comboBox.getSelectedItem());
+					break;
 				}	
 			}
 		});
@@ -311,11 +316,11 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void removeUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
