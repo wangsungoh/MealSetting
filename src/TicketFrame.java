@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -30,10 +31,10 @@ public class TicketFrame extends JFrame implements ActionListener{
 	JPanel bottomJp = new JPanel();
 
 	JButton jb1 = new JButton("식권 발매 프로그램");
-	JButton jb2 = new JButton(new ImageIcon("./resources/menu_1.png"));
-	JButton jb3 = new JButton(new ImageIcon("./resources/menu_2.png"));
-	JButton jb4 = new JButton(new ImageIcon("./resources/menu_3.png"));
-	JButton jb5 = new JButton(new ImageIcon("./resources/menu_4.png"));
+	JButton jb2;
+	JButton jb3;
+	JButton jb4;
+	JButton jb5;
 	JButton jb6 = new JButton("시계");
 	JButton jb7= new JButton("닫기");
 
@@ -51,6 +52,16 @@ public class TicketFrame extends JFrame implements ActionListener{
 	 * Create the frame.
 	 */
 	public TicketFrame(JFrame main_frame) {
+	    URL url2 = TicketFrame.class.getResource("/resources/menu_1.png");
+	    URL url3 = TicketFrame.class.getResource("/resources/menu_2.png");
+	    URL url4 = TicketFrame.class.getResource("/resources/menu_3.png");
+	    URL url5 = TicketFrame.class.getResource("/resources/menu_4.png");
+
+	    jb2 = new JButton(new ImageIcon(url2));
+	    jb3 = new JButton(new ImageIcon(url3));
+		jb4 = new JButton(new ImageIcon(url4));
+		jb5 = new JButton(new ImageIcon(url5));
+
 		setResizable(false);
 		setTitle("식권 발매 프로그램");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
