@@ -3,6 +3,15 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 
 import util.Jdbc;
 
@@ -13,7 +22,7 @@ public class Meal {
 	private int price;
 	private int maxCount;
 	private int todayMeal;
-	
+	private JButton jbtn = null;
 	private String tableNameString = "meal";
 	
  	private String mealNoString = "mealNo";
@@ -24,6 +33,84 @@ public class Meal {
  	private String todayMealString = "todayMeal";
 
 	private String pKey = mealNoString;
+	List<Meal> mealData = new ArrayList<Meal>();
+
+	public Meal(int mealNo, int cuisineNo, String mealName, int price, int maxCount, int todayMeal) {
+		this.mealNo = mealNo;
+		this.cuisineNo = cuisineNo;
+		this.mealName = mealName;
+		this.price = price;
+		this.maxCount = maxCount;
+		this.todayMeal = todayMeal;
+	}
+	
+	public void setBtn(JButton jbtn) {
+		this.jbtn = jbtn;
+	}
+	
+	public JButton getBtn() {
+		return this.jbtn;
+	}
+	
+	public Meal() {
+		
+	}
+	
+	public void getMealUseCuisineNo(final int cuisineNo) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "select * from meal where cuisineNo=" + String.valueOf(cuisineNo));
+		
+		try {
+			while(rs.next()) {
+				int mealNo = rs.getInt("mealNo");
+				int cuisineNo1 = rs.getInt("cuisineNo");
+				String mealName = rs.getString("mealName");
+				int price = rs.getInt("price");
+				int maxCount = rs.getInt("maxCount");
+				int todayMeal = rs.getInt("todayMeal");
+
+				Meal meal = new Meal(mealNo, cuisineNo1, mealName, price, maxCount, todayMeal);
+				
+				mealData.add(meal);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
+	}
+
+	public List<Meal> getMealData() {
+		return this.mealData;
+	}
+	
+	public void updateMeal(final DefaultTableModel model) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+				
+		for(int row = 0 ; row < model.getRowCount(); row++) {
+			int mealNo = (int) model.getValueAt(row,  0);
+			int orderCount = (int) model.getValueAt(row,  2);
+
+			ResultSet rs = db.selectDb(db.getConnection(), "select *, maxCount from meal where mealNo='" + mealNo + "'");
+			int mealDbMaxCount = 0;
+			try {
+				while(rs.next()) {
+					mealDbMaxCount = rs.getInt("maxCount");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			int updateCount = mealDbMaxCount - orderCount; 
+			db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET `maxCount`='" + updateCount + "' WHERE `mealNo`='" + mealNo + "'");
+		}
+
+		db.closeConnection();
+	}
 
 	public void initializeMeal() {
 		Jdbc db = new Jdbc();
@@ -31,7 +118,8 @@ public class Meal {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/meal.txt";
+		
+		InputStream inputStream = Meal.class.getResourceAsStream("/DataFiles/meal.txt");
 		String line;
 
 		/**
@@ -39,7 +127,8 @@ public class Meal {
 		 */
 		try {
 			BufferedReader bReader;
-			bReader = new BufferedReader(new FileReader(dataFileName));
+			bReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
 			bReader.readLine(); // this will read the first line
 
 			while ((line = bReader.readLine()) != null) {
@@ -110,4 +199,12 @@ public class Meal {
 	public String getPkeyString() {
 		return pKey;
 	}
+	
+	public int getMealNo() { return this.mealNo; }
+	public int getCuisineNo() { return this.cuisineNo; }
+	public String getMealName() { return this.mealName; }
+	public int getPrice() { return this.price; }
+	public int getMaxCount() { return this.maxCount; }
+	public int getTodayMeal() { return this.todayMeal; }
+
 }

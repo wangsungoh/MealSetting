@@ -3,6 +3,13 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.Connection;
 
@@ -19,17 +26,90 @@ public class Member {
 
 	private String pKey = memberNoString;
 
+	private int theLastMemberNo;
+
+	List<Member> memberData = new ArrayList<Member>();
+
+	public Member(int memberNo, String memberName, String passwd) {
+		this.memberNo = memberNo;
+		this.memberName = memberName;
+		this.passwd = passwd;
+	}
+	
+	public List<Member> getMemberData() {
+		return this.memberData;
+	}
+
 	public Member() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public int gettheLastMemberNo() {
+		getLastMemberNoOfTable();
+		return this.theLastMemberNo;
+	}
+	
+	private void getLastMemberNoOfTable() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "select memberNo from member order by memberNo desc limit 1");
+		
+		try {
+			while(rs.next()) {
+				int no = rs.getInt("memberNo");
+				this.theLastMemberNo = no;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
+	}
+	
+	public void getAllMember() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		ResultSet rs = db.selectDb(db.getConnection(), "select * from member");
+		try {
+			while(rs.next()) {
+				int memberNo = rs.getInt("memberNo");
+				String memberName = rs.getString("memberName");
+				String memberPasswd = rs.getString("passwd");
+
+				Member member = new Member(memberNo, memberName, memberPasswd);
+				
+				this.memberData.add(member);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
+	}
+	
+	public void insertNewMember(final String memberName, final String passwd) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
+		
+		db.closeConnection();
+		
+		getAllMember();
 	}
 	
 	public void initializeMember() {
 		Jdbc db = new Jdbc();
 		db.connectUser();
+		
+		memberData.clear();
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/member.txt";
+		InputStream inputStream = Meal.class.getResourceAsStream("/DataFiles/member.txt");
 		String line;
 
 		/**
@@ -37,7 +117,8 @@ public class Member {
 		 */
 		try {
 			BufferedReader bReader;
-			bReader = new BufferedReader(new FileReader(dataFileName));
+			
+			bReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			bReader.readLine(); // this will read the first line
 
 			while ((line = bReader.readLine()) != null) {
@@ -48,6 +129,10 @@ public class Member {
 				String value1 = datavalue[0];
 				String value2 = datavalue[1];
 				String value3 = datavalue[2];
+
+				Member member = new Member(Integer.valueOf(value1), value2, value3);
+				
+				memberData.add(member);
 
 				/**
 				 * Printing the value read from file to the console
@@ -83,6 +168,18 @@ public class Member {
 
 	public String getPkeyString() {
 		return pKey;
+	}
+	
+	public int getMemberNo() {
+		return this.memberNo;
+	}
+	
+	public String getMemberName() {
+		return this.memberName;
+	}
+	
+	public String getPasswd() {
+		return this.passwd;
 	}
 }
 

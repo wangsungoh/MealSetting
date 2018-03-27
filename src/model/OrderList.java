@@ -3,6 +3,10 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.swing.table.DefaultTableModel;
 
 import util.Jdbc;
 
@@ -14,18 +18,36 @@ public class OrderList {
 	private int orderCount;
 	private int amount;
 	private String orderDate;
-	
+
 	private String tableNameString = "orderlist";
-	
- 	private String orderNoString = "orderNo";
- 	private String cuisineNoString = "cuisineNo";
- 	private String mealNoString = "mealNo";
- 	private String memberNoString = "memberNo";
- 	private String orderCountString = "orderCount";
- 	private String amountString = "amount";
- 	private String orderDateString = "orderDate";
+
+	private String orderNoString = "orderNo";
+	private String cuisineNoString = "cuisineNo";
+	private String mealNoString = "mealNo";
+	private String memberNoString = "memberNo";
+	private String orderCountString = "orderCount";
+	private String amountString = "amount";
+	private String orderDateString = "orderDate";
 
 	private String pKey = orderNoString;
+
+	public void insertNewOrder(final int cuisineNo, final int memberNo, final String orderDate, final DefaultTableModel model) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+
+		for(int row = 0 ; row < model.getRowCount(); row++) {
+			int mealNo = (int) model.getValueAt(row,  0);
+			int orderCount = (int) model.getValueAt(row,  2);
+			int amount = (int) model.getValueAt(row,  3);
+
+			db.queryDb(db.getConnection(), "INSERT INTO `meal`.`orderlist` "
+					+ "(`cuisineNo`, `mealNo`, `memberNo`, `orderCount`, `amount`, `orderDate`) "
+					+ "VALUES "
+					+ "('" + cuisineNo + "', '" + mealNo + "', '" + memberNo + "', '" + orderCount + "', '" + amount + "', '" + orderDate + "')");
+		}
+
+		db.closeConnection();
+	}
 
 	public void initializeOrderList() {
 		Jdbc db = new Jdbc();
@@ -33,7 +55,7 @@ public class OrderList {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/orderlist.txt";
+		InputStream inputStream = Meal.class.getResourceAsStream("/DataFiles/orderlist.txt");
 		String line;
 
 		/**
@@ -41,7 +63,7 @@ public class OrderList {
 		 */
 		try {
 			BufferedReader bReader;
-			bReader = new BufferedReader(new FileReader(dataFileName));
+			bReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			bReader.readLine(); // this will read the first line
 
 			while ((line = bReader.readLine()) != null) {
@@ -56,7 +78,7 @@ public class OrderList {
 				String value5 = datavalue[4];
 				String value6 = datavalue[5];
 				String value7 = datavalue[6];
-				
+
 				/**
 				 * Printing the value read from file to the console
 				 */
@@ -73,13 +95,13 @@ public class OrderList {
 						+ "', '" + value7
 						+ "')");
 			}
-			
+
 			bReader.close();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		db.closeConnection();
 	}
 
@@ -94,7 +116,7 @@ public class OrderList {
 	public String getCuisineNoString() {
 		return cuisineNoString;
 	}
-	
+
 	public String getMealNoString() {
 		return mealNoString;
 	}
@@ -114,7 +136,7 @@ public class OrderList {
 	public String getOrderDateString() {
 		return orderDateString;
 	}
-	
+
 	public String getPkeyString() {
 		return pKey;
 	}
