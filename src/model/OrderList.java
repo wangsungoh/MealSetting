@@ -3,6 +3,8 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import util.Jdbc;
 
@@ -33,7 +35,7 @@ public class OrderList {
 		/**
 		 * Source file to read data from.
 		 */
-		String dataFileName = "./DataFiles/orderlist.txt";
+		InputStream inputStream = Meal.class.getResourceAsStream("/DataFiles/orderlist.txt");
 		String line;
 
 		/**
@@ -41,7 +43,7 @@ public class OrderList {
 		 */
 		try {
 			BufferedReader bReader;
-			bReader = new BufferedReader(new FileReader(dataFileName));
+			bReader = new BufferedReader(new InputStreamReader(inputStream));
 			bReader.readLine(); // this will read the first line
 
 			while ((line = bReader.readLine()) != null) {
