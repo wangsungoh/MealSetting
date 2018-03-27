@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 
 import util.Jdbc;
 
@@ -85,6 +86,32 @@ public class Meal {
 		return this.mealData;
 	}
 	
+	public void updateMeal(final DefaultTableModel model) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+				
+		for(int row = 0 ; row < model.getRowCount(); row++) {
+			int mealNo = (int) model.getValueAt(row,  0);
+			int orderCount = (int) model.getValueAt(row,  2);
+
+			ResultSet rs = db.selectDb(db.getConnection(), "select *, maxCount from meal where mealNo='" + mealNo + "'");
+			int mealDbMaxCount = 0;
+			try {
+				while(rs.next()) {
+					mealDbMaxCount = rs.getInt("maxCount");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			int updateCount = mealDbMaxCount - orderCount; 
+			db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET `maxCount`='" + updateCount + "' WHERE `mealNo`='" + mealNo + "'");
+		}
+
+		db.closeConnection();
+	}
+
 	public void initializeMeal() {
 		Jdbc db = new Jdbc();
 		db.connectUser();

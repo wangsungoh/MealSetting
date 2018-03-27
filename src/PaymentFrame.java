@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import component.Ticket;
 import model.Meal;
 import model.Member;
+import model.OrderList;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	Object[][] data = {};
 	private int currentMealCount = 0;
 	Member member;
+	int cuisineType = -1;
 
 	static <T> T[] append(T[] arr, T element) {
 		final int N = arr.length;
@@ -75,6 +77,20 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		member = new Member();
 		member.initializeMember();
 
+		switch(title) {
+		case "한식":
+			this.cuisineType = 1;
+			break;
+		case "중식":
+			this.cuisineType = 2;
+			break;
+		case "일식":
+			this.cuisineType = 3;
+			break;
+		case "양식":
+			this.cuisineType = 4;
+			break;
+		}
 		JLabel lblNewLabel = new JLabel(title);
 		lblNewLabel.setBounds(412, 10, 130, 35);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -244,7 +260,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 					}
 
 					DecimalFormat db = new DecimalFormat("###,###,###,###");
-					
+
 					System.out.println(String.valueOf(sum));
 					label.setText(db.format(sum)+" 원");
 
@@ -318,7 +334,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 								JOptionPane.INFORMATION_MESSAGE);
 
 						List<Object> tableData = new ArrayList<Object>();
-						
+
 						Calendar calendar1 = Calendar.getInstance(); 
 
 						int year = calendar1.get(Calendar.YEAR);
@@ -328,6 +344,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 						int min = calendar1.get(Calendar.MINUTE); 
 						int sec = calendar1.get(Calendar.SECOND);
 						String ticketSerial = String.format("%d%d%d%d%d%d-%d", year, month, day, hour, min, sec, sMemberNo );
+						String orderDate = String.format("%d-%d-%d %d:%d:%d", year, month, day, hour, min, sec);
 						for(int i = 0 ; i < model.getRowCount(); i++) {
 							int mealCount = (int) model.getValueAt(i, 2);
 							Color ticketColor;
@@ -336,7 +353,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 							} else {
 								ticketColor = Color.BLUE;
 							}
-							
+
 							for(int cnt = 1; cnt <= mealCount; cnt++ ){
 								List<Object> colData = new ArrayList<Object>();
 
@@ -345,19 +362,25 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 								colData.add(model.getValueAt(i, 1));
 								String menuString = String.format("메뉴 : %s", model.getValueAt(i, 2));
 								colData.add(menuString);
-								
+
 								int mealPrice = (int)model.getValueAt(i, 3)/mealCount;
 								DecimalFormat db = new DecimalFormat("###,###,###,###");
-								
+
 								colData.add(db.format(mealPrice)+"원");
-								
+
 								String mealCntPer = String.format("%d/%d", cnt, mealCount);
 								colData.add(mealCntPer);
 								colData.add(ticketColor);
-								
+
 								tableData.add(colData);
 							}
 						}
+						
+						OrderList order = new OrderList();
+						order.insertNewOrder(cuisineType, sMemberNo, orderDate, model);
+
+						Meal meal = new Meal();
+						meal.updateMeal(model);
 						
 						Ticket ticket = new Ticket(main_frame, tableData);
 						ticket.setVisible(true);
