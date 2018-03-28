@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import component.ImagePanel;
 import component.ManageMenu;
+import component.ManageOrderlist;
 import component.RegMenu;
 
 import javax.imageio.ImageIO;
@@ -30,14 +31,14 @@ public class ManagementFrame extends JFrame {
 		setTitle("관리");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 609, 341);
+		setBounds(100, 100, 609, 373);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		ImagePanel imagePanel = new ImagePanel();
-		imagePanel.setBounds(16, 35, 574, 277);
+		imagePanel.setBounds(16, 45, 574, 289);
 		contentPane.add(imagePanel);
 		
 		JButton btnRegMenu = new JButton("메뉴등록");
@@ -65,6 +66,9 @@ public class ManagementFrame extends JFrame {
 		JButton btnOrderList = new JButton("결제조회");
 		btnOrderList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManageOrderlist manageOrderlist = new ManageOrderlist();
+				
+				manageOrderlist.setVisible(true);
 			}
 		});
 		btnOrderList.setBounds(252, 6, 117, 29);

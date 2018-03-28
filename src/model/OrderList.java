@@ -5,6 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -31,6 +35,22 @@ public class OrderList {
 
 	private String pKey = orderNoString;
 
+	List<OrderList> orderData = new ArrayList<OrderList>();
+
+	public OrderList() {
+		
+	}
+	
+	public OrderList(final int orderNo, final int cuisineNo, final int mealNo, final int memberNo, final int orderCount, final int amount, final String orderDate) {
+		this.orderNo = orderNo;
+		this.cuisineNo = cuisineNo;
+		this.mealNo = mealNo;
+		this.memberNo = memberNo;
+		this.orderCount = orderCount;
+		this.amount = amount;
+		this.orderDate = orderDate;
+	}
+	
 	public void insertNewOrder(final int cuisineNo, final int memberNo, final String orderDate, final DefaultTableModel model) {
 		Jdbc db = new Jdbc();
 		db.connectUser();
@@ -49,6 +69,38 @@ public class OrderList {
 		db.closeConnection();
 	}
 
+	public List<OrderList> getOrderData() {
+		return this.orderData;
+	}
+
+	public void getOrderlist() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "SELECT * FROM meal.orderlist");
+		orderData.clear();
+
+		try {
+			while(rs.next()) {
+				int orderNo = rs.getInt("orderNo");
+				int cuisineNo = rs.getInt("cuisineNo");
+				int mealNo = rs.getInt("mealNo");
+				int memberNo = rs.getInt("memberNo");
+				int orderCount = rs.getInt("orderCount");
+				int amount = rs.getInt("amount");
+				String orderDate = rs.getString("orderDate");
+
+				OrderList orderlist = new OrderList(orderNo, cuisineNo, mealNo, memberNo, orderCount, amount, orderDate);
+				
+				orderData.add(orderlist);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
+	}
+	
 	public void initializeOrderList() {
 		Jdbc db = new Jdbc();
 		db.connectUser();
@@ -141,4 +193,42 @@ public class OrderList {
 		return pKey;
 	}
 
+	/*
+	 * 	private int orderNo;
+	private int cuisineNo;
+	private int mealNo;
+	private int memberNo;
+	private int orderCount;
+	private int amount;
+	private String orderDate;
+
+	 */
+	
+	public int getOrderNo() {
+		return this.orderNo;
+	}
+
+	public int getCuisineNo() {
+		return this.cuisineNo;
+	}
+
+	public int getMealNo() {
+		return this.mealNo;
+	}
+	
+	public int getMemberNo() {
+		return this.memberNo;
+	}
+	
+	public int getOrderCount() {
+		return this.orderCount;
+	}
+	
+	public int getAmount() {
+		return this.amount;
+	}
+	
+	public String getOrderDate() {
+		return this.orderDate;
+	}
 }

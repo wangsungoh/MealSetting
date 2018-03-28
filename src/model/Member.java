@@ -8,8 +8,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mysql.jdbc.Connection;
 
@@ -30,10 +33,21 @@ public class Member {
 
 	List<Member> memberData = new ArrayList<Member>();
 
+    Map<Integer, String> memberMap = new HashMap<Integer, String>();
+	
 	public Member(int memberNo, String memberName, String passwd) {
 		this.memberNo = memberNo;
 		this.memberName = memberName;
 		this.passwd = passwd;
+	}
+	
+	public Map<Integer, String> getMemberMap() {
+		System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+		for( Integer key : memberMap.keySet() ){
+            System.out.println( String.format("키 : %d, 값 : %s", key, memberMap.get(key)) );
+        }
+
+		return this.memberMap;
 	}
 	
 	public List<Member> getMemberData() {
@@ -71,6 +85,7 @@ public class Member {
 		Jdbc db = new Jdbc();
 		db.connectUser();
 		
+		this.memberData.clear();
 		ResultSet rs = db.selectDb(db.getConnection(), "select * from member");
 		try {
 			while(rs.next()) {
@@ -80,6 +95,7 @@ public class Member {
 
 				Member member = new Member(memberNo, memberName, memberPasswd);
 				
+				this.memberMap.put(memberNo, memberName);
 				this.memberData.add(member);
 			}
 		} catch (SQLException e) {

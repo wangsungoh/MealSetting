@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,6 +38,7 @@ public class Meal {
 
 	private String pKey = mealNoString;
 	List<Meal> mealData = new ArrayList<Meal>();
+    Map<Integer, String> menuMap = new HashMap<Integer, String>();
 
 	public Meal(int mealNo, int cuisineNo, String mealName, int price, int maxCount, int todayMeal) {
 		this.mealNo = mealNo;
@@ -44,6 +47,10 @@ public class Meal {
 		this.price = price;
 		this.maxCount = maxCount;
 		this.todayMeal = todayMeal;
+	}
+	
+	public Map<Integer, String> getMenuMap() {
+		return this.menuMap;
 	}
 	
 	public void setCheckbox(JCheckBox checkBox) {
@@ -63,7 +70,31 @@ public class Meal {
 	}
 	
 	public Meal() {
+//		getAllMealData();
+	}
+	
+	public void getAllMealData() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "SELECT * FROM meal.meal");
 		
+		try {
+			while(rs.next()) {
+				int mealNo = rs.getInt("mealNo");
+				int cuisineNo1 = rs.getInt("cuisineNo");
+				String mealName = rs.getString("mealName");
+				int price = rs.getInt("price");
+				int maxCount = rs.getInt("maxCount");
+				int todayMeal = rs.getInt("todayMeal");
+				
+				menuMap.put(mealNo, mealName);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
 	}
 	
 	public void getMealUseCuisineNo(final int cuisineNo) {
@@ -84,6 +115,7 @@ public class Meal {
 				Meal meal = new Meal(mealNo, cuisineNo1, mealName, price, maxCount, todayMeal);
 				
 				mealData.add(meal);
+				menuMap.put(mealNo, mealName);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
