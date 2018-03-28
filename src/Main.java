@@ -88,6 +88,9 @@ public class Main {
 		JButton btnManagerButton = new JButton("관리자");
 		btnManagerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				ManagementFrame managementFrame = new ManagementFrame(frame);
+				managementFrame.setVisible(true);
 			}
 		});
 		btnManagerButton.setBounds(6, 89, 227, 37);

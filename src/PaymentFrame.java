@@ -145,7 +145,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 					+ item.getTodayMeal() + ", "
 					);
 
-			if (item.getMaxCount() > 1 && item.getTodayMeal() == 1) {
+			if (item.getMaxCount() > 0 && item.getTodayMeal() == 1) {
 				JButton jbtn = new JButton(item.getMealName()+"("+item.getPrice()+")");
 				jbtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {

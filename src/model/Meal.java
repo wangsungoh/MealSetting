@@ -86,6 +86,25 @@ public class Meal {
 		return this.mealData;
 	}
 	
+	//						// cuisineNo
+	// menuName, 
+//	String maxCount = (String) comboBoxMaxCount.getSelectedItem();
+	//String price = (String ) comboBoxPrice.getSelectedItem();
+
+	public void insertNewMenu(final int cuisineNo, final String menuName, final String price, final String maxCount) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		//INSERT INTO `meal`.`meal` (`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) VALUES ('1', '오리똥집', '9000', '100', '0');
+
+//		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
+		db.queryDb(db.getConnection(), "INSERT INTO `meal`.`meal` "
+				+ "(`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) V"
+				+ "ALUES ('" + cuisineNo + "', '" + menuName + "', '" + price + "', '" + maxCount + "', '0')");
+
+		db.closeConnection();
+	}
+	
 	public void updateMeal(final DefaultTableModel model) {
 		Jdbc db = new Jdbc();
 		db.connectUser();
