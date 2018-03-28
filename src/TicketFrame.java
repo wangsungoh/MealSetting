@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import model.Meal;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Font;
 
 public class TicketFrame extends JFrame implements ActionListener{
 	private JFrame frame;
@@ -29,6 +31,8 @@ public class TicketFrame extends JFrame implements ActionListener{
 	JPanel topJp = new JPanel();
 	JPanel centerJp = new JPanel();
 	JPanel bottomJp = new JPanel();
+	
+	JPanel topLeftRightJp = new JPanel();
 
 	JButton jb1 = new JButton("식권 발매 프로그램");
 	JButton jb2;
@@ -47,6 +51,7 @@ public class TicketFrame extends JFrame implements ActionListener{
 	int sec = calendar1.get(Calendar.SECOND); 
 
 	javax.swing.Timer timer; 
+	private final JButton btnNewButton = new JButton("메뉴");
 	/**
 	 * 
 	 * Create the frame.
@@ -74,12 +79,25 @@ public class TicketFrame extends JFrame implements ActionListener{
 		timer.start(); 
 
 		rootJp.setLayout(new BorderLayout());
-		topJp.setLayout(new GridLayout(1, 0));
+		topLeftRightJp.setBorder(null);
+		topLeftRightJp.setLayout(new BorderLayout());
+		topJp.setBorder(null);
+		topJp.setLayout(new GridLayout(2, 0));
 		centerJp.setLayout(new GridLayout(2, 2));
 		bottomJp.setLayout(new GridLayout(2, 0));
+		jb1.setFont(new Font("굴림", Font.BOLD, 17));
 		jb1.setEnabled(false);
-
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		jb1.setBorder(null);
+		btnNewButton.setEnabled(false);
+		topLeftRightJp.add(btnNewButton, BorderLayout.WEST);
+		
 		topJp.add(jb1);
+		topJp.add(topLeftRightJp);
 		jb2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Meal meal = new Meal();
