@@ -126,6 +126,30 @@ public class Meal {
 		db.closeConnection();
 	}
 
+	public void deleteMenu(final List<Integer> menuList) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		menuList.forEach((item) -> {
+			db.queryDb(db.getConnection(), "DELETE FROM `meal`.`meal` WHERE `mealNo`='" + item + "'");
+		});
+
+		db.closeConnection();
+
+	}
+	
+	public void selectTodayMeal(final List<Integer> menuList) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+
+		menuList.forEach((item) -> {
+			db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET `todayMeal`='1' WHERE `mealNo`='" + item + "'");
+		});
+
+		db.closeConnection();
+
+	}
+
 	public void updateMeal(final DefaultTableModel model) {
 		Jdbc db = new Jdbc();
 		db.connectUser();

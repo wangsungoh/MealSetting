@@ -29,7 +29,7 @@ public class Ticket extends JFrame {
 	public Ticket(JFrame main_frame, List<Object> tableData) {		
 		setPreferredSize(new Dimension(200, 400));
 		setSize(200, 400);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 
 		JPanel panel = new JPanel(new GridLayout(0, 1));
