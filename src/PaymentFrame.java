@@ -55,19 +55,12 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 	Member member;
 	int cuisineType = -1;
 
-	static <T> T[] append(T[] arr, T element) {
-		final int N = arr.length;
-		arr = Arrays.copyOf(arr, N + 1);
-		arr[N] = element;
-		return arr;
-	}
-
 	/**
 	 * Create the frame.
 	 */
 	public PaymentFrame(List<Meal> mealData, String title, JFrame main_frame) {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1071, 536);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -248,9 +241,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 					Object[] obj = {currentMeal.getMealNo(), currentMeal.getMealName(), countOfMeal, countOfMeal*currentMeal.getPrice()};
 					tableData.add(obj);
-					tableData.toArray( data );
 
-					data = append(data, obj);
 					DefaultTableModel model = (DefaultTableModel) table.getModel();
 					model.addRow(obj);
 					int sum = 0;

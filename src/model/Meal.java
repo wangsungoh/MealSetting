@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.table.DefaultTableModel;
 
 import util.Jdbc;
@@ -23,6 +24,7 @@ public class Meal {
 	private int maxCount;
 	private int todayMeal;
 	private JButton jbtn = null;
+	private JCheckBox jchk = null;
 	private String tableNameString = "meal";
 	
  	private String mealNoString = "mealNo";
@@ -44,6 +46,14 @@ public class Meal {
 		this.todayMeal = todayMeal;
 	}
 	
+	public void setCheckbox(JCheckBox checkBox) {
+		this.jchk = checkBox;
+	}
+	
+	public JCheckBox getCheckbox() {
+		return this.jchk;
+	}
+	
 	public void setBtn(JButton jbtn) {
 		this.jbtn = jbtn;
 	}
@@ -60,6 +70,7 @@ public class Meal {
 		Jdbc db = new Jdbc();
 		db.connectUser();
 		ResultSet rs = db.selectDb(db.getConnection(), "select * from meal where cuisineNo=" + String.valueOf(cuisineNo));
+		mealData.clear();
 		
 		try {
 			while(rs.next()) {
@@ -99,12 +110,22 @@ public class Meal {
 
 //		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
 		db.queryDb(db.getConnection(), "INSERT INTO `meal`.`meal` "
-				+ "(`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) V"
-				+ "ALUES ('" + cuisineNo + "', '" + menuName + "', '" + price + "', '" + maxCount + "', '0')");
+				+ "(`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) "
+				+ "VALUES ('" + cuisineNo + "', '" + menuName + "', '" + price + "', '" + maxCount + "', '0')");
 
 		db.closeConnection();
 	}
 	
+	public void updateMenu(final int selectMealNo, final int cuisineNo, final String menuName, final String price, final String maxCount) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET "
+				+ "`cuisineNo`='" + cuisineNo + "', `mealName`='" + menuName + "', `price`='" + price + "', `maxCount`='" + maxCount + "' WHERE `mealNo`='" + selectMealNo + "'");
+
+		db.closeConnection();
+	}
+
 	public void updateMeal(final DefaultTableModel model) {
 		Jdbc db = new Jdbc();
 		db.connectUser();

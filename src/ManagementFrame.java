@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import component.ImagePanel;
+import component.ManageMenu;
 import component.RegMenu;
 
 import javax.imageio.ImageIO;
@@ -28,7 +29,7 @@ public class ManagementFrame extends JFrame {
 	public ManagementFrame(JFrame main_frame) {
 		setTitle("관리");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 609, 341);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,6 +54,9 @@ public class ManagementFrame extends JFrame {
 		JButton btnManageMenu = new JButton("메뉴관리");
 		btnManageMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManageMenu manageMenu = new ManageMenu();
+				
+				manageMenu.setVisible(true);
 			}
 		});
 		btnManageMenu.setBounds(129, 6, 117, 29);
