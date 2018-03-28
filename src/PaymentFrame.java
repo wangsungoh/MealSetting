@@ -75,7 +75,6 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		contentPane.setLayout(null);
 
 		member = new Member();
-		member.initializeMember();
 
 		switch(title) {
 		case "한식":
