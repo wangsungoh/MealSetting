@@ -8,9 +8,12 @@ import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.table.DefaultTableModel;
 
 import util.Jdbc;
@@ -23,6 +26,7 @@ public class Meal {
 	private int maxCount;
 	private int todayMeal;
 	private JButton jbtn = null;
+	private JCheckBox jchk = null;
 	private String tableNameString = "meal";
 	
  	private String mealNoString = "mealNo";
@@ -34,6 +38,7 @@ public class Meal {
 
 	private String pKey = mealNoString;
 	List<Meal> mealData = new ArrayList<Meal>();
+    Map<Integer, String> menuMap = new HashMap<Integer, String>();
 
 	public Meal(int mealNo, int cuisineNo, String mealName, int price, int maxCount, int todayMeal) {
 		this.mealNo = mealNo;
@@ -42,6 +47,18 @@ public class Meal {
 		this.price = price;
 		this.maxCount = maxCount;
 		this.todayMeal = todayMeal;
+	}
+	
+	public Map<Integer, String> getMenuMap() {
+		return this.menuMap;
+	}
+	
+	public void setCheckbox(JCheckBox checkBox) {
+		this.jchk = checkBox;
+	}
+	
+	public JCheckBox getCheckbox() {
+		return this.jchk;
 	}
 	
 	public void setBtn(JButton jbtn) {
@@ -53,13 +70,38 @@ public class Meal {
 	}
 	
 	public Meal() {
+//		getAllMealData();
+	}
+	
+	public void getAllMealData() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		ResultSet rs = db.selectDb(db.getConnection(), "SELECT * FROM meal.meal");
 		
+		try {
+			while(rs.next()) {
+				int mealNo = rs.getInt("mealNo");
+				int cuisineNo1 = rs.getInt("cuisineNo");
+				String mealName = rs.getString("mealName");
+				int price = rs.getInt("price");
+				int maxCount = rs.getInt("maxCount");
+				int todayMeal = rs.getInt("todayMeal");
+				
+				menuMap.put(mealNo, mealName);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		db.closeConnection();
 	}
 	
 	public void getMealUseCuisineNo(final int cuisineNo) {
 		Jdbc db = new Jdbc();
 		db.connectUser();
 		ResultSet rs = db.selectDb(db.getConnection(), "select * from meal where cuisineNo=" + String.valueOf(cuisineNo));
+		mealData.clear();
 		
 		try {
 			while(rs.next()) {
@@ -73,6 +115,7 @@ public class Meal {
 				Meal meal = new Meal(mealNo, cuisineNo1, mealName, price, maxCount, todayMeal);
 				
 				mealData.add(meal);
+				menuMap.put(mealNo, mealName);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -86,6 +129,59 @@ public class Meal {
 		return this.mealData;
 	}
 	
+	//						// cuisineNo
+	// menuName, 
+//	String maxCount = (String) comboBoxMaxCount.getSelectedItem();
+	//String price = (String ) comboBoxPrice.getSelectedItem();
+
+	public void insertNewMenu(final int cuisineNo, final String menuName, final String price, final String maxCount) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		//INSERT INTO `meal`.`meal` (`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) VALUES ('1', '오리똥집', '9000', '100', '0');
+
+//		db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberName`, `passwd`) VALUES ('" + memberName + "', '" + passwd + "')");
+		db.queryDb(db.getConnection(), "INSERT INTO `meal`.`meal` "
+				+ "(`cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) "
+				+ "VALUES ('" + cuisineNo + "', '" + menuName + "', '" + price + "', '" + maxCount + "', '0')");
+
+		db.closeConnection();
+	}
+	
+	public void updateMenu(final int selectMealNo, final int cuisineNo, final String menuName, final String price, final String maxCount) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET "
+				+ "`cuisineNo`='" + cuisineNo + "', `mealName`='" + menuName + "', `price`='" + price + "', `maxCount`='" + maxCount + "' WHERE `mealNo`='" + selectMealNo + "'");
+
+		db.closeConnection();
+	}
+
+	public void deleteMenu(final List<Integer> menuList) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		menuList.forEach((item) -> {
+			db.queryDb(db.getConnection(), "DELETE FROM `meal`.`meal` WHERE `mealNo`='" + item + "'");
+		});
+
+		db.closeConnection();
+
+	}
+	
+	public void selectTodayMeal(final List<Integer> menuList) {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+
+		menuList.forEach((item) -> {
+			db.queryDb(db.getConnection(), "UPDATE `meal`.`meal` SET `todayMeal`='1' WHERE `mealNo`='" + item + "'");
+		});
+
+		db.closeConnection();
+
+	}
+
 	public void updateMeal(final DefaultTableModel model) {
 		Jdbc db = new Jdbc();
 		db.connectUser();
@@ -146,7 +242,7 @@ public class Meal {
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6);
+//				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6);
 				db.queryDb(db.getConnection(), "INSERT INTO `meal` "
 						+ "(`mealNo`, `cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) "
 						+ "VALUES ('" 

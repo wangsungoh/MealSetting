@@ -73,7 +73,7 @@ public class RegUserFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldMemberName.getText().length() > 0 && passwordField.getPassword().length > 0 && passwordField_1.getPassword().length > 0) {
 					if (Arrays.equals(passwordField.getPassword(), passwordField_1.getPassword())) {
-						System.out.println("registration");
+//						System.out.println("registration");
 						member.insertNewMember(textFieldMemberName.getText(), String.valueOf(passwordField.getPassword()));
 						JOptionPane.showMessageDialog(main_frame,
 							    "사원이 등록되었습니다.",
@@ -88,7 +88,7 @@ public class RegUserFrame extends JFrame {
 						
 						main_frame.setVisible(true);
 					} else {
-						System.out.println("alert invalid password");						
+//						System.out.println("alert invalid password");						
 
 						JOptionPane.showMessageDialog(main_frame,
 						    "패스워드 확인 요망",
@@ -96,7 +96,7 @@ public class RegUserFrame extends JFrame {
 						    JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
-					System.out.println("alert empty text field");
+//					System.out.println("alert empty text field");
 					
 					JOptionPane.showMessageDialog(main_frame,
 						    "항목 누락",
