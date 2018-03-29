@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -36,9 +38,14 @@ public class OrderList {
 	private String pKey = orderNoString;
 
 	List<OrderList> orderData = new ArrayList<OrderList>();
-
+	Map<Integer, Integer> orderSumMap = new HashMap<Integer, Integer>();
+	
 	public OrderList() {
 		
+	}
+	
+	public Map<Integer, Integer> getOrderSumMap() {
+		return this.orderSumMap;
 	}
 	
 	public OrderList(final int orderNo, final int cuisineNo, final int mealNo, final int memberNo, final int orderCount, final int amount, final String orderDate) {
@@ -73,6 +80,29 @@ public class OrderList {
 		return this.orderData;
 	}
 
+	public void getOrderSummary() {
+		Jdbc db = new Jdbc();
+		db.connectUser();
+		
+		for(int cuiNo=1; cuiNo <= 4; cuiNo++) {			
+			ResultSet rs = db.selectDb(db.getConnection(), 
+					"SELECT SUM(orderCount) AS total FROM meal.orderlist WHERE cuisineNo=" + cuiNo + " GROUP BY cuisineNo");
+
+			try {
+				while(rs.next()) {
+					int orderSummary = rs.getInt("total");
+					System.out.println(String.format("cuisineNo : %d, summary : %d", cuiNo, orderSummary));
+					orderSumMap.put(cuiNo, orderSummary);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}	
+		
+		db.closeConnection();
+	}
+	
 	public void getOrderlist() {
 		Jdbc db = new Jdbc();
 		db.connectUser();

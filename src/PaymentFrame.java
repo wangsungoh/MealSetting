@@ -130,13 +130,13 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 		panel.setLayout(new GridLayout(6, 4));
 
 		mealData.forEach((item) -> {
-			System.out.println(item.getMealNo() + ", " 
-					+ item.getCuisineNo() + ", "
-					+ item.getMealName() + ", "
-					+ item.getPrice() + ", "
-					+ item.getMaxCount() + ", "
-					+ item.getTodayMeal() + ", "
-					);
+//			System.out.println(item.getMealNo() + ", " 
+//					+ item.getCuisineNo() + ", "
+//					+ item.getMealName() + ", "
+//					+ item.getPrice() + ", "
+//					+ item.getMaxCount() + ", "
+//					+ item.getTodayMeal() + ", "
+//					);
 
 			if (item.getMaxCount() > 0 && item.getTodayMeal() == 1) {
 				JButton jbtn = new JButton(item.getMealName()+"("+item.getPrice()+")");
@@ -183,7 +183,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 						int selectMealNo = (int)model.getValueAt(row, 0);
 						mealData.forEach((item) -> {
 							if (item.getMealNo() == selectMealNo) {
-								System.out.println("test " + row + ", selectMealNo : " + selectMealNo);
+								//System.out.println("test " + row + ", selectMealNo : " + selectMealNo);
 
 								model.removeRow(row);
 								item.getBtn().setEnabled(true);
@@ -237,7 +237,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 							"Message",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					System.out.println(currentMeal.getMealName() + ", " + countOfMeal);
+					//System.out.println(currentMeal.getMealName() + ", " + countOfMeal);
 
 					Object[] obj = {currentMeal.getMealNo(), currentMeal.getMealName(), countOfMeal, countOfMeal*currentMeal.getPrice()};
 					tableData.add(obj);
@@ -251,7 +251,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 					DecimalFormat db = new DecimalFormat("###,###,###,###");
 
-					System.out.println(String.valueOf(sum));
+					//System.out.println(String.valueOf(sum));
 					label.setText(db.format(sum)+" 원");
 
 					label_2.setText("음식이름");
@@ -280,7 +280,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 				List<String> memberNameList = new ArrayList<String>();
 				member.getAllMember();
 				member.getMemberData().forEach((item)-> {
-					System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
+					//System.out.println(">>>>> " + item.getMemberNo() + " " + item.getMemberName() + " " + item.getPasswd());
 					memberNameList.add(String.valueOf(item.getMemberNo()));
 				});
 
@@ -307,7 +307,7 @@ public class PaymentFrame extends JFrame implements DocumentListener {
 
 					for(int i = 0; i < member.getMemberData().size(); i++) {
 						if (member.getMemberData().get(i).getMemberNo() == sMemberNo) {
-							System.out.println("sMemberNo : " + sMemberNo +" , " + member.getMemberData().get(i).getMemberNo() + ", " + member.getMemberData().get(i).getPasswd());
+							//System.out.println("sMemberNo : " + sMemberNo +" , " + member.getMemberData().get(i).getMemberNo() + ", " + member.getMemberData().get(i).getPasswd());
 							cMemberPasswd = member.getMemberData().get(i).getPasswd();
 						}
 					}

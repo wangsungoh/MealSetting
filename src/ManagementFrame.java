@@ -13,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 import component.ImagePanel;
 import component.ManageMenu;
 import component.ManageOrderlist;
+import component.OrderStat;
 import component.RegMenu;
+import model.OrderList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -24,10 +26,14 @@ public class ManagementFrame extends JFrame {
 
 	private JPanel contentPane;
 
+	OrderList orderList = null;
+	
 	/**
 	 * Create the frame.
 	 */
 	public ManagementFrame(JFrame main_frame) {
+		orderList = new OrderList();
+		
 		setTitle("관리");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,6 +83,10 @@ public class ManagementFrame extends JFrame {
 		JButton btnMenuOrder = new JButton("메뉴별 주문현황");
 		btnMenuOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				orderList.getOrderSummary();
+				
+				OrderStat orderStat = new OrderStat(orderList.getOrderSumMap());
+				orderStat.setVisible(true);
 			}
 		});
 		btnMenuOrder.setBounds(375, 6, 135, 29);
