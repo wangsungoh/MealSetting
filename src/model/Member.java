@@ -42,10 +42,10 @@ public class Member {
 	}
 	
 	public Map<Integer, String> getMemberMap() {
-		System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-		for( Integer key : memberMap.keySet() ){
-            System.out.println( String.format("키 : %d, 값 : %s", key, memberMap.get(key)) );
-        }
+//		System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+//		for( Integer key : memberMap.keySet() ){
+//            System.out.println( String.format("키 : %d, 값 : %s", key, memberMap.get(key)) );
+//        }
 
 		return this.memberMap;
 	}
@@ -153,7 +153,7 @@ public class Member {
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2 + " " + value3);
+//				System.out.println(value1 + " " + value2 + " " + value3);
 				db.queryDb(db.getConnection(), "INSERT INTO `member` (`memberNo`, `memberName`, `passwd`) VALUES ('" + value1 + "', '" + value2 + "', '" + value3 + "')");
 			}
 			

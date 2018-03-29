@@ -66,9 +66,9 @@ public class ManageMenu extends JFrame implements DocumentListener {
 				String columnName = model.getColumnName(column);
 				Boolean checked = (Boolean) model.getValueAt(row, column);
 				if (checked) {
-					System.out.println(columnName + ": " + true);
+//					System.out.println(columnName + ": " + true);
 				} else {
-					System.out.println(columnName + ": " + false);
+//					System.out.println(columnName + ": " + false);
 					allSelectBtn = true;
 					btnSelectAll.setEnabled(allSelectBtn);
 				}
@@ -154,7 +154,7 @@ public class ManageMenu extends JFrame implements DocumentListener {
 			public void actionPerformed(ActionEvent e) {
 				int rowCount = model.getRowCount();
 				for (int row = 0; row < rowCount; row ++) {
-					System.out.println(model.getValueAt(row, 0) + " - " + model.getValueAt(row, 1));
+//					System.out.println(model.getValueAt(row, 0) + " - " + model.getValueAt(row, 1));
 					model.setValueAt(new Boolean(true), row, 0);
 				}
 				allSelectBtn = false;
@@ -185,8 +185,8 @@ public class ManageMenu extends JFrame implements DocumentListener {
 					Boolean checked = (Boolean)model.getValueAt(row, 0);
 					if (checked) {
 						checkedCount++;
-						System.out.println(checked + ", " + model.getValueAt(row, 1) + ", " + 
-						model.getValueAt(row, 2) + ", " + model.getValueAt(row, 3));
+//						System.out.println(checked + ", " + model.getValueAt(row, 1) + ", " + 
+//						model.getValueAt(row, 2) + ", " + model.getValueAt(row, 3));
 						
 						mealName = (String) model.getValueAt(row, 1);
 						selectPrice = (int) model.getValueAt(row, 2);
@@ -211,11 +211,11 @@ public class ManageMenu extends JFrame implements DocumentListener {
 					
 					return;
 				} else {
-					System.out.println("EDIT");
+//					System.out.println("EDIT");
 
 					mealData.forEach((item) -> {
 						if (selectMealStr.equals(item.getMealName())) {
-							System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
+//							System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
 							selectMealNo = item.getMealNo();
 						}
 					});
@@ -244,7 +244,7 @@ public class ManageMenu extends JFrame implements DocumentListener {
 
 						mealData.forEach((item) -> {
 							if (selectMealStr.equals(item.getMealName())) {
-								System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
+//								System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
 								removeMealNoList.add(item.getMealNo());
 							}
 						});
@@ -259,7 +259,7 @@ public class ManageMenu extends JFrame implements DocumentListener {
 					
 					return;
 				} else {
-					System.out.println("DELETE");
+//					System.out.println("DELETE");
 					
 					meal.deleteMenu(removeMealNoList);
 					meal.getMealUseCuisineNo(cuisineNo);
@@ -297,7 +297,7 @@ public class ManageMenu extends JFrame implements DocumentListener {
 
 						mealData.forEach((item) -> {
 							if (selectMealStr.equals(item.getMealName())) {
-								System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
+//								System.out.println(selectMealStr + ", " + item.getMealName() + selectMealStr.equals(item.getMealName()));
 								selectTodayMealNoList.add(item.getMealNo());
 							}
 						});

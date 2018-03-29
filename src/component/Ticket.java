@@ -39,7 +39,7 @@ public class Ticket extends JFrame {
 		getContentPane().add(contentpane);
 		
 		tableData.forEach((item) -> {
-			System.out.print(item);
+//			System.out.print(item);
 			
 			@SuppressWarnings("unchecked")
 			List<Object> obj = (List<Object>) item;

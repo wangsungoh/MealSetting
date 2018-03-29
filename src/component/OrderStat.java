@@ -103,7 +103,7 @@ public class OrderStat extends JFrame {
 		panel_1.add(table.getTableHeader(), BorderLayout.NORTH);
 
 		for(int cuisineNo = 1; cuisineNo<=4; cuisineNo++) {
-			System.out.println(String.format("%d %s %d", cuisineNo, convertCuisine(cuisineNo), orderSumMap.get(cuisineNo)));
+//			System.out.println(String.format("%d %s %d", cuisineNo, convertCuisine(cuisineNo), orderSumMap.get(cuisineNo)));
 			Object[] obj = { 
 					convertCuisine(cuisineNo), 
 					orderSumMap.get(cuisineNo)

@@ -49,7 +49,7 @@ public class Cuisine {
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2);
+//				System.out.println(value1 + " " + value2);
 				db.queryDb(db.getConnection(), "INSERT INTO `cuisine` (`cuisineNo`, `cuisineName`) VALUES ('" + value1 + "', '" + value2 + "')");
 			}
 			

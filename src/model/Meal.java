@@ -242,7 +242,7 @@ public class Meal {
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6);
+//				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6);
 				db.queryDb(db.getConnection(), "INSERT INTO `meal` "
 						+ "(`mealNo`, `cuisineNo`, `mealName`, `price`, `maxCount`, `todayMeal`) "
 						+ "VALUES ('" 

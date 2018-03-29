@@ -106,13 +106,13 @@ public class TicketFrame extends JFrame implements ActionListener{
 				mealData = meal.getMealData();
 
 				mealData.forEach((item) -> {
-					System.out.println(item.getMealNo() + ", " 
-							+ item.getCuisineNo() + ", "
-							+ item.getMealName() + ", "
-							+ item.getPrice() + ", "
-							+ item.getMaxCount() + ", "
-							+ item.getTodayMeal() + ", "
-							);
+//					System.out.println(item.getMealNo() + ", " 
+//							+ item.getCuisineNo() + ", "
+//							+ item.getMealName() + ", "
+//							+ item.getPrice() + ", "
+//							+ item.getMaxCount() + ", "
+//							+ item.getTodayMeal() + ", "
+//							);
 				});
 
 				PaymentFrame paymentFrame = new PaymentFrame(mealData, "한식", main_frame);

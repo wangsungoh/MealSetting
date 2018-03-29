@@ -53,10 +53,10 @@ public class RegMenu extends JFrame {
 				meal.getMealUseCuisineNo(cuisineNo);
 
 				mealData = meal.getMealData();
-
-				mealData.forEach((item) -> {
-					System.out.println(item.getMealName());
-				});
+//
+//				mealData.forEach((item) -> {
+//					System.out.println(item.getMealName());
+//				});
 			}
 		});
 		contentPane.add(comboBoxType);
@@ -101,7 +101,7 @@ public class RegMenu extends JFrame {
 				} else {
 					mealData.forEach((item) -> {
 						if (item.getMealName().equals(menuName)) {
-							System.out.println(item.getMealName());
+//							System.out.println(item.getMealName());
 
 							textFieldMenuName.setText("");
 							return;
@@ -119,7 +119,7 @@ public class RegMenu extends JFrame {
 					//						meal.insertNewMenu(cuisineNo, menuName, price, maxCount);
 					meal.updateMenu(selectMealNo, cuisineNo, menuName, price, maxCount);
 
-					System.out.println(String.format("%d %s %s %s", cuisineNo, menuName, maxCount, price));
+//					System.out.println(String.format("%d %s %s %s", cuisineNo, menuName, maxCount, price));
 
 					textFieldMenuName.setText("");
 					comboBoxType.setSelectedIndex(0);
@@ -171,10 +171,10 @@ public class RegMenu extends JFrame {
 				meal.getMealUseCuisineNo(cuisineNo);
 
 				mealData = meal.getMealData();
-
-				mealData.forEach((item) -> {
-					System.out.println(item.getMealName());
-				});
+//
+//				mealData.forEach((item) -> {
+//					System.out.println(item.getMealName());
+//				});
 			}
 		});
 		contentPane.add(comboBoxType);
@@ -219,9 +219,7 @@ public class RegMenu extends JFrame {
 				} else {
 					mealData.forEach((item) -> {
 						if (item.getMealName().equals(menuName)) {
-							System.out.println(item.getMealName());
-
-
+//							System.out.println(item.getMealName());
 							textFieldMenuName.setText("");
 							return;
 						}				
@@ -246,7 +244,7 @@ public class RegMenu extends JFrame {
 						String maxCount = (String) comboBoxMaxCount.getSelectedItem();
 
 						meal.insertNewMenu(cuisineNo, menuName, price, maxCount);
-						System.out.println(String.format("%d %s %s %s", cuisineNo, menuName, maxCount, price));
+//						System.out.println(String.format("%d %s %s %s", cuisineNo, menuName, maxCount, price));
 
 						textFieldMenuName.setText("");
 						comboBoxType.setSelectedIndex(0);

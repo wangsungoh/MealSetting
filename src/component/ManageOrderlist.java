@@ -144,11 +144,11 @@ public class ManageOrderlist extends JFrame {
 					
 					return;
 				} else {
-					System.out.println(searchKeyword);
+//					System.out.println(searchKeyword);
 
 					model.setNumRows(0);
 					orderData.forEach((item) -> {
-						System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
+//						System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
 						
 						if (menuMap.get(item.getMealNo()).contains(searchKeyword)) {
 							Object[] obj = { 
@@ -177,7 +177,7 @@ public class ManageOrderlist extends JFrame {
 				textFieldSearch.setText("");
 				
 				orderData.forEach((item) -> {
-					System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
+//					System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
 					
 					Object[] obj = { 
 							convertCuisine(item.getCuisineNo()), 
@@ -219,7 +219,7 @@ public class ManageOrderlist extends JFrame {
 		contentPane.add(btnClose);
 
 		orderData.forEach((item) -> {
-			System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
+//			System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
 			
 			Object[] obj = { 
 					convertCuisine(item.getCuisineNo()), 

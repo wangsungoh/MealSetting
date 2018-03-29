@@ -91,7 +91,7 @@ public class OrderList {
 			try {
 				while(rs.next()) {
 					int orderSummary = rs.getInt("total");
-					System.out.println(String.format("cuisineNo : %d, summary : %d", cuiNo, orderSummary));
+//					System.out.println(String.format("cuisineNo : %d, summary : %d", cuiNo, orderSummary));
 					orderSumMap.put(cuiNo, orderSummary);
 				}
 			} catch (SQLException e) {
@@ -164,7 +164,7 @@ public class OrderList {
 				/**
 				 * Printing the value read from file to the console
 				 */
-				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6 + " " + value7);
+//				System.out.println(value1 + " " + value2 + " " + value3 + " " + value4 + " " + value5 + " " + value6 + " " + value7);
 				db.queryDb(db.getConnection(), "INSERT INTO `orderlist` "
 						+ "(`orderNo`, `cuisineNo`, `mealNo`, `memberNo`, `orderCount`, `amount`, `orderDate`) "
 						+ "VALUES ('" 
