@@ -17,6 +17,12 @@ import javax.swing.table.DefaultTableModel;
 import model.Meal;
 import model.Member;
 import model.OrderList;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ManageOrderlist extends JFrame {
 
@@ -30,7 +36,8 @@ public class ManageOrderlist extends JFrame {
 	List<OrderList> orderData = new ArrayList<OrderList>();
 	Map<Integer, String> memberMap = new HashMap<Integer, String>();
 	Map<Integer, String> menuMap = new HashMap<Integer, String>();
-
+	private JTextField textFieldSearch;
+	String searchKeyword = "";
 
 	private String convertCuisine(final int cuisineNo) {
 		switch(cuisineNo) {
@@ -113,6 +120,78 @@ public class ManageOrderlist extends JFrame {
 		
 		panel_1.add(new JScrollPane(table), BorderLayout.CENTER);
 		panel_1.add(table.getTableHeader(), BorderLayout.NORTH);
+		
+		JLabel lblNewLabel = new JLabel("메뉴명 : ");
+		lblNewLabel.setBounds(6, 17, 49, 16);
+		contentPane.add(lblNewLabel);
+		
+		textFieldSearch = new JTextField();
+		textFieldSearch.setBounds(57, 12, 130, 26);
+		contentPane.add(textFieldSearch);
+		textFieldSearch.setColumns(10);
+		
+		JButton btnSearch = new JButton("검색");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				searchKeyword = textFieldSearch.getText();
+				if (searchKeyword.isEmpty()) {
+					JOptionPane.showMessageDialog(contentPane,
+							"검색할 키워드를 넣어주세요.",
+							"Message",
+							JOptionPane.ERROR_MESSAGE);
+					
+					return;
+				} else {
+					System.out.println(searchKeyword);
+
+					model.setNumRows(0);
+					orderData.forEach((item) -> {
+						System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
+						
+						if (menuMap.get(item.getMealNo()).contains(searchKeyword)) {
+							Object[] obj = { 
+									convertCuisine(item.getCuisineNo()), 
+									menuMap.get(item.getMealNo()), 
+									memberMap.get(item.getMemberNo()), 
+									item.getOrderCount(), 
+									item.getAmount(), 
+									item.getOrderDate().split(" ")[0] 
+							};
+
+							model.addRow(obj);
+						}
+					});
+				}
+			}
+		});
+		btnSearch.setBounds(195, 11, 75, 29);
+		contentPane.add(btnSearch);
+		
+		JButton btnShowAll = new JButton("모두보기");
+		btnShowAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.setNumRows(0);
+				searchKeyword = "";
+				textFieldSearch.setText("");
+				
+				orderData.forEach((item) -> {
+					System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
+					
+					Object[] obj = { 
+							convertCuisine(item.getCuisineNo()), 
+							menuMap.get(item.getMealNo()), 
+							memberMap.get(item.getMemberNo()), 
+							item.getOrderCount(), 
+							item.getAmount(), 
+							item.getOrderDate().split(" ")[0] 
+					};
+
+					model.addRow(obj);
+				});
+			}
+		});
+		btnShowAll.setBounds(272, 11, 93, 29);
+		contentPane.add(btnShowAll);
 
 		orderData.forEach((item) -> {
 			System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
@@ -130,5 +209,4 @@ public class ManageOrderlist extends JFrame {
 		});
 
 	} // 생성자 
-	
 }
