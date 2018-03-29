@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTable.PrintMode;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.awt.event.ActionEvent;
 
 public class ManageOrderlist extends JFrame {
@@ -192,6 +194,29 @@ public class ManageOrderlist extends JFrame {
 		});
 		btnShowAll.setBounds(272, 11, 93, 29);
 		contentPane.add(btnShowAll);
+		
+		JButton btnPrint = new JButton("인쇄");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					table.print(PrintMode.FIT_WIDTH);
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnPrint.setBounds(365, 11, 93, 29);
+		contentPane.add(btnPrint);
+		
+		JButton btnClose = new JButton("닫기");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnClose.setBounds(459, 11, 93, 29);
+		contentPane.add(btnClose);
 
 		orderData.forEach((item) -> {
 			System.out.println("GEEEEET >> " + item.getMemberNo() + " , " + memberMap.get(item.getMemberNo()));
