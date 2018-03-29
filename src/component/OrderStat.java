@@ -121,7 +121,7 @@ public class OrderStat extends JFrame {
 				dispose();
 			}
 		});
-		btnClose.setBounds(207, 6, 40, 20);
+		btnClose.setBounds(173, 6, 74, 20);
 		contentPane.add(btnClose);
 		
 		JLabel labelSum = new JLabel("합계 : ");
